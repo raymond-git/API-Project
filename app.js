@@ -38,6 +38,7 @@ fetch('https://covid-193.p.rapidapi.com/statistics?country=all', options)
 		}
 	}
 
+	console.log("Test Commit");
 	
 // app.post("/", function (req, res) {
 //   const firstName = req.body.fName;

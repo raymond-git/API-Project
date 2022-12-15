@@ -15,28 +15,59 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/signup.html");
+  res.sendFile(__dirname + "/dog.html");
 });
 
-
-const options = {
-	method: 'GET',
+let option = {
+	method: "GET",
 	headers: {
-		'X-RapidAPI-Key': 'c77ac38ea7mshc3153da3be08b85p1fa043jsncb05780c8367',
-		'X-RapidAPI-Host': 'covid-193.p.rapidapi.com'
+		'Content-Type': 'application/json'
 	}
-};
+}
 
-fetch('https://covid-193.p.rapidapi.com/statistics?country=all', options)
-	.then(response => response.json())
-	.then(response => console.log(response))
-	.catch(err => console.error(err));
+app.post("/", function (req, res) {
+  const fetchDog = req.body.doggyType;
+  fetch("https://dog.ceo/api/breeds/list/all", option)
+    .then((response) => response.json())
+    .then((response) => {
+	 // Go through the array to see if the user response exist in the database. If it exist it will be true otherwise false	
+      if (response.message.hasOwnProperty(fetchDog)) {
+		//Convert the data array to a string
+		const responseString = JSON.stringify(response.message[fetchDog]);
+		console.log(responseString);
+        res.write(responseString);
+        res.send();
+      } else {
+        res.write(`Dog breen not found: ${fetchDog}`);
+        res.send();
+      }
+    })
+    .catch((err) => console.error(err));
+});
+
 	
-	for(let i = 0; i < response.length;i++){
-		if(response.length[i].contain("China")){
-			console.log(response[i].country.cases);
-		}
-	}
+	 //console.log(response.message.australian[0]))
+
+// const options = {
+// 	method: 'GET',
+// 	headers: {
+// 		'X-RapidAPI-Key': 'c77ac38ea7mshc3153da3be08b85p1fa043jsncb05780c8367',
+// 		'X-RapidAPI-Host': 'covid-193.p.rapidapi.com'
+// 	}
+// };
+
+// fetch('https://covid-193.p.rapidapi.com/statistics?country=all', options)
+// 	.then(response => response.json())
+// 	.then(response => console.log(response))
+// 	.catch(err => console.error(err));
+	
+// 	for(let i = 0; i < response.length;i++){
+// 		if(response.length[i].contain("China")){
+// 			console.log(response[i].country.cases);
+// 		}
+// 	}
+
+
 
 	console.log("Test Commit");
 	

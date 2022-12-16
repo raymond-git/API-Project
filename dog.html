@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Page Title</title>
 </head>
-
 <body>
-
     <form action="/" method="post" id="dog">
         <label for="fname">Search Dog Breed:</label>
         <input type="text" name="dogBreed">
     </form>
     <p id="demo"></p>
 
-    <select id="dropdown" name="menu">
-        <option></option>
-    </select>
+    <select id="dropdown" name="menu"></select>
+    <p id="demo2"></p>
+
     <script>
         window.onload = async function () {
             // const userMenu = req.body.menu;
@@ -24,12 +21,12 @@
             // Send a GET request to the API endpoint
             const response = await fetch(api_url);
             const data = await response.json();
-
             const dropDown = document.getElementById("dropdown");
 
             // Get the keys of the data.message object (which are the breed names)
             const breedNames = Object.keys(data.message);
             for (const breed of breedNames) {
+
                 // Generate the options for the <select> element using the data from the API
                 const newOption = document.createElement("option");
                 newOption.value = breed;
@@ -38,18 +35,19 @@
             }
 
             const select = document.getElementById("dropdown");
-
             select.addEventListener("change", async function () {
-                const selectedBreed = this.value;
-                const apiUrl = `https://dog.ceo/api/breed/${selectedBreed}/images/random`;
+                const apiUrl = 'https://dog.ceo/api/breeds/list/all';
                 const response = await fetch(apiUrl);
                 const data = await response.json();
 
+                 // This is the value of the object
+                const selectedBreed = this.value;
+
                 // Print out the data in the "demo" element
-                document.getElementById("demo").innerHTML = JSON.stringify(data);
+                document.getElementById("demo2").innerHTML = JSON.stringify(data.message[selectedBreed]);
             });
         }
     </script>
-</body>
 
+</body>
 </html>

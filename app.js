@@ -17,8 +17,6 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + "/dog.html");
 });
 
-
-
 //Post Request to Homepage
 app.post("/", function (req, res) {
   const userDog = req.body.dogBreed;

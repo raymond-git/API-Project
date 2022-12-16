@@ -5,6 +5,7 @@ const request = require("request");
 const https = require("https");
 const fetch = require('node-fetch');
 const { response } = require("express");
+const res = require("express/lib/response");
 
 
 // For example, suppose you have a public directory that contains files like images, CSS, and HTML.
@@ -17,31 +18,33 @@ app.get("/", function (req, res) {
 });
 
 
-let option = {
-	method: "GET",
-	headers: {
-		'Content-Type': 'application/json'
-	}
-}
 
+//Post Request to Homepage
 app.post("/", function (req, res) {
-  const fetchDog = req.body.doggyType;
-  fetch("https://dog.ceo/api/breeds/list/all", option)
-    .then((response) => response.json())
-    .then((response) => {
-	 // Go through the array to see if the user response exist in the database. If it exist it will be true otherwise false	
-      if (response.message.hasOwnProperty(fetchDog)) {
-		//Convert the data array to a string
-		const responseString = JSON.stringify(response.message[fetchDog]);
-		console.log(responseString);
-        res.write(responseString);
-        res.send();
-      } else {
-        res.write(`Dog breen not found: ${fetchDog}`);
-        res.send();
+  const userDog = req.body.dogBreed;
+  api_url = ("https://dog.ceo/api/breeds/list/all");
+  async function Breed() {
+    const option = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
       }
-    })
-    .catch((err) => console.error(err));
+    }
+    const response = await fetch(api_url, option);
+    const data = await response.json();
+    // Go through the data array to see if the user dog breed request exist in the database. If it exist it will be true otherwise false	
+    if (data.message.hasOwnProperty(userDog)) {
+      // Convert the data array to a string
+      const responseString = JSON.stringify(data.message[userDog])
+      res.write("We have " + responseString);
+      res.send();
+    } else {
+      res.sendFile(__dirname + "/failure.html");
+      //res.write(`Dog breed not found: ${userDog}`);
+      //res.send();
+    }
+  }
+  Breed();
 });
 
 	

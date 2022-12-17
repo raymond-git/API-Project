@@ -12,6 +12,7 @@
 
     <select id="dropdown" name="menu"></select>
     <p id="demo2"></p>
+    <img src="" style="width: 300px; height: 300px; object-fit: cover;" id="image-container">
 
     <script>
         window.onload = async function () {
@@ -34,18 +35,27 @@
                 dropDown.appendChild(newOption);
             }
 
-            const select = document.getElementById("dropdown");
-            select.addEventListener("change", async function () {
-                const apiUrl = 'https://dog.ceo/api/breeds/list/all';
-                const response = await fetch(apiUrl);
+            // const select = document.getElementById("dropdown");
+            dropDown.addEventListener("change", async function () {
+                
+                // const apiUrl = 'https://dog.ceo/api/breeds/list/all';
+                const breedValues = this.value;
+                const dogImageUrl = `https://dog.ceo/api/breed/${breedValues}/images/random`;
+                const response = await fetch(dogImageUrl);
                 const data = await response.json();
+   
+                const imgElement = document.createElement('img');
+                imgElement.src = data.message;
 
-                 // This is the value of the object
-                const selectedBreed = this.value;
-
+                const imageContainer = document.getElementById('image-container');
+                if (imageContainer.hasChildNodes()) {
+                imageContainer.removeChild(imageContainer.lastChild);
+                }
+                imageContainer.appendChild(imgElement);
+           
                 // Print out the data in the "demo" element
-                document.getElementById("demo2").innerHTML = JSON.stringify(data.message[selectedBreed]);
-            });
+                document.getElementById("demo2").innerHTML = imgElement;
+            });  
         }
     </script>
 

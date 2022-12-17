@@ -6,6 +6,7 @@ const https = require("https");
 const fetch = require('node-fetch');
 const { response } = require("express");
 const res = require("express/lib/response");
+const { json } = require("express/lib/response");
 
 
 // For example, suppose you have a public directory that contains files like images, CSS, and HTML.
@@ -44,6 +45,19 @@ app.post("/", function (req, res) {
   }
   Breed();
 });
+
+// async function example(){
+//   const apiUrl = 'https://dog.ceo/api/breeds/list/all';
+//   const response1 = await fetch(apiUrl);
+//   const data = await response1.json();
+
+//   const object = Object.values(data.message);
+
+//   console.log(object)
+// }
+
+// example();
+
 
 	
 // app.post("/", function (req, res) {
